@@ -1144,3 +1144,20 @@ legend {
         display: none;
     }
 } 
+
+/* Ajuste de centralização do botão WhatsApp flutuante */
+.whatsapp-circle {
+    background: #25d366;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+.whatsapp-circle svg {
+    width: 36px !important;
+    height: 36px !important;
+    display: block;
+}
