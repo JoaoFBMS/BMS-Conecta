@@ -169,57 +169,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Animação de entrada dos elementos
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '0';
-                entry.target.style.transform = 'translateY(30px)';
-                
-                setTimeout(() => {
-                    entry.target.style.transition = 'all 0.8s ease-out';
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }, 100);
-                
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Observa elementos para animação
-    document.querySelectorAll('.step-card, .award-card, .faq-item').forEach(el => {
-        observer.observe(el);
-    });
-
-    // Efeito parallax no hero (apenas quando não há scroll programático)
-    let isScrolling = false;
-    let scrollTimeout;
-    
-    window.addEventListener('scroll', () => {
-        if (isScrolling) return; // Pula se há scroll programático
-        
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero');
-        const heroContent = document.querySelector('.hero-content');
-        
-        if (scrolled < 600) {
-            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-            heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
-            heroContent.style.opacity = 1 - (scrolled * 0.002);
-        } else {
-            // Reset das transformações quando scroll > 600px
-            hero.style.transform = 'translateY(300px)';
-            heroContent.style.transform = 'translateY(180px)';
-            heroContent.style.opacity = '0.2';
-        }
-    });
-    
     // Detectar scroll programático e resetar parallax
     const originalScrollTo = window.scrollTo;
     window.scrollTo = function(...args) {
