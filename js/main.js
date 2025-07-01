@@ -351,6 +351,38 @@ function handleFormSubmit(e) {
     
     // Verificar se é o formulário de indicação
     if (form.id === 'indicacaoForm') {
+        // Validação de e-mails
+        const seuEmailInput = form.querySelector('[name="seu_email"]');
+        const indicadoEmailInput = form.querySelector('[name="indicado_email"]');
+        let valid = true;
+        if (!isValidEmail(seuEmailInput.value.trim())) {
+            showFieldError(seuEmailInput, 'Digite um e-mail válido');
+            valid = false;
+        }
+        if (!isValidEmail(indicadoEmailInput.value.trim())) {
+            showFieldError(indicadoEmailInput, 'Digite um e-mail válido');
+            valid = false;
+        }
+        // Validação obrigatória dos campos principais
+        const obrigatorios = [
+            {input: form.querySelector('[name="seu_nome"]'), msg: 'Nome é obrigatório'},
+            {input: form.querySelector('[name="seu_cargo"]'), msg: 'Cargo é obrigatório'},
+            {input: form.querySelector('[name="sua_empresa"]'), msg: 'Empresa é obrigatória'},
+            {input: form.querySelector('[name="seu_cnpj"]'), msg: 'CNPJ é obrigatório'},
+            {input: form.querySelector('[name="seu_celular"]'), msg: 'Celular é obrigatório'},
+            {input: form.querySelector('[name="indicado_nome"]'), msg: 'Nome do indicado é obrigatório'},
+            {input: form.querySelector('[name="indicado_cargo"]'), msg: 'Cargo do indicado é obrigatório'},
+            {input: form.querySelector('[name="indicado_empresa"]'), msg: 'Empresa do indicado é obrigatória'},
+            {input: form.querySelector('[name="indicado_cnpj"]'), msg: 'CNPJ do indicado é obrigatório'},
+            {input: form.querySelector('[name="indicado_celular"]'), msg: 'Celular do indicado é obrigatório'}
+        ];
+        obrigatorios.forEach(campo => {
+            if (!campo.input.value.trim()) {
+                showFieldError(campo.input, campo.msg);
+                valid = false;
+            }
+        });
+        if (!valid) return;
         handleIndicacaoForm(form, submitButton);
         return;
     }
@@ -453,17 +485,22 @@ async function handleIndicacaoForm(form, submitButton) {
         return;
     }
 
+    const seuEmail = form.querySelector('[name="seu_email"]').value.trim();
+    const indicadoEmail = form.querySelector('[name="indicado_email"]').value.trim();
+
     const data = {
-        seu_nome: document.getElementById("seu-nome").value,
-        seu_cargo: document.getElementById("seu-cargo").value,
-        sua_empresa: document.getElementById("sua-empresa").value,
-        seu_cnpj: document.getElementById("seu-cnpj").value,
-        seu_celular: document.getElementById("seu-celular").value,
-        indicado_nome: document.getElementById("indicado-nome").value,
-        indicado_cargo: document.getElementById("indicado-cargo").value,
-        indicado_empresa: document.getElementById("indicado-empresa").value,
-        indicado_cnpj: document.getElementById("indicado-cnpj").value,
-        indicado_celular: document.getElementById("indicado-celular").value
+        seu_nome: form.querySelector('[name="seu_nome"]').value.trim(),
+        seu_cargo: form.querySelector('[name="seu_cargo"]').value.trim(),
+        sua_empresa: form.querySelector('[name="sua_empresa"]').value.trim(),
+        seu_cnpj: form.querySelector('[name="seu_cnpj"]').value.trim(),
+        seu_celular: form.querySelector('[name="seu_celular"]').value.trim(),
+        seu_email: seuEmail,
+        indicado_nome: form.querySelector('[name="indicado_nome"]').value.trim(),
+        indicado_cargo: form.querySelector('[name="indicado_cargo"]').value.trim(),
+        indicado_empresa: form.querySelector('[name="indicado_empresa"]').value.trim(),
+        indicado_cnpj: form.querySelector('[name="indicado_cnpj"]').value.trim(),
+        indicado_celular: form.querySelector('[name="indicado_celular"]').value.trim(),
+        indicado_email: indicadoEmail
     };
 
     try {
@@ -567,4 +604,9 @@ function animateOnScroll() {
 // Inicializar animações de scroll
 document.addEventListener('DOMContentLoaded', function() {
     animateOnScroll();
-}); 
+});
+
+// Validação de e-mail
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+} 
