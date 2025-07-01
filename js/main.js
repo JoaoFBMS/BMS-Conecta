@@ -435,12 +435,12 @@ function handleFormSubmit(e) {
 
 // Função específica para o formulário de indicação
 async function handleIndicacaoForm(form, submitButton) {
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzZyq-Spp4daGjvuwXl_EcwzIxGU-tvfEqgtclZaEEGn-sAiKir6Sxh23V_II7rPrK8gQ/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzCtpeHnh4X2ImTofZreRYhgap6PW5scCankirqvxKqJWKBlWWKlDhD70YDduZRh6kh/exec";
 
     // Validar todos os campos obrigatórios
     const requiredFields = [
         'seu-nome', 'seu-cargo', 'sua-empresa', 'seu-cnpj', 'seu-celular',
-        'indicado-nome', 'indicado-cargo', 'indicado-empresa', 'indicado-cnpj', 'indicado-celular'
+        'indicado-nome', 'indicado-cargo', 'indicado-empresa', 'indicado-cnpj', 'indicado-celular', 'indicado-email'
     ];
     
     let isValid = true;

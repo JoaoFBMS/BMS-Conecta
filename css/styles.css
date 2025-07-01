@@ -417,9 +417,18 @@ h2::after {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
 }
 
+.form-container, .form-header, .form-title, .form-grid, .form-group, .form-group label, .form-group input, .form-group textarea, .form-group select {
+    text-align: left !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+}
+
 .form-header {
-    text-align: center;
     margin-bottom: 40px;
+}
+
+.form-title {
+    margin-bottom: 20px;
 }
 
 .form-header h3 {
@@ -448,10 +457,16 @@ h2::after {
 }
 
 .form-group label {
+    text-align: left !important;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-weight: 600;
     color: var(--azul-escuro);
+}
+
+.form-group input::placeholder {
+    color: #b0b6be;
+    opacity: 1;
 }
 
 .form-group input,
