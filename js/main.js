@@ -129,38 +129,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Smooth Scroll
+    // Smooth Scroll com logs de depuração
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
             const targetId = this.getAttribute('href');
-            
-            // Para o link "Início" (#hero), scroll para o topo da página
-            if (targetId === '#hero') {
-                // Reset imediato do parallax antes do scroll
-                const hero = document.querySelector('.hero');
-                const heroContent = document.querySelector('.hero-content');
-                
-                if (hero && heroContent) {
-                    hero.style.transform = 'translateY(0px)';
-                    heroContent.style.transform = 'translateY(0px)';
-                    heroContent.style.opacity = '1';
-                }
-                
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-                return;
-            }
-            
-            // Para outros links, scroll para a seção
             const target = document.querySelector(targetId);
+            console.log('Clique anchor:', targetId, 'Elemento encontrado?', !!target);
             if (target) {
-                // Calcular offset para considerar a navbar fixa
-                const navbarHeight = document.querySelector('.navbar').offsetHeight;
-                const targetPosition = target.offsetTop - navbarHeight;
-                
+                e.preventDefault();
+                if (targetId === '#hero') {
+                    const hero = document.querySelector('.hero');
+                    const heroContent = document.querySelector('.hero-content');
+                    if (hero && heroContent) {
+                        hero.style.transform = 'translateY(0px)';
+                        heroContent.style.transform = 'translateY(0px)';
+                        heroContent.style.opacity = '1';
+                    }
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    return;
+                }
+                const navbar = document.querySelector('.navbar');
+                const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                const targetRect = target.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const targetPosition = targetRect.top + scrollTop - navbarHeight;
+                console.log('Scroll para:', targetId, 'targetPosition:', targetPosition, 'navbarHeight:', navbarHeight);
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -170,25 +166,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Detectar scroll programático e resetar parallax
+    let isScrolling = false;
+    let scrollTimeout;
     const originalScrollTo = window.scrollTo;
     window.scrollTo = function(...args) {
         isScrolling = true;
         clearTimeout(scrollTimeout);
-        
         // Reset imediato das transformações parallax
         const hero = document.querySelector('.hero');
         const heroContent = document.querySelector('.hero-content');
-        
         if (hero && heroContent) {
             hero.style.transform = 'translateY(0px)';
             heroContent.style.transform = 'translateY(0px)';
             heroContent.style.opacity = '1';
         }
-        
         scrollTimeout = setTimeout(() => {
             isScrolling = false;
         }, 1000);
-        
         return originalScrollTo.apply(this, args);
     };
 });
